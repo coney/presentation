@@ -1,6 +1,7 @@
 # Java Unit Testing
 
 
+
 ## Git
 - Git is a free and open source distributed version control system
 - Designed to handle everything from small to very large projects with speed and efficiency.
@@ -32,6 +33,7 @@ git push
 
 ### Send Pull(Merge) Request
 put some pictures here
+
 
 
 ## JUnit
@@ -170,6 +172,7 @@ test2
 ```
 
 
+
 ### Exercise 1
 
 你是一名体育老师，在某次课距离下课还有五分钟时，你决定搞一个游戏。
@@ -178,27 +181,18 @@ test2
 
 1. 你首先说出三个不同的特殊数，要求必须是个位数，比如3、5、7。
 2. 让所有学生拍成一队，然后按顺序报数。
-3. 学生报数时：
-  - 如果所报数字是第一个特殊数（3）的倍数，那么不能说该数字，而要说Fizz；
-  - 如果所报数字是第二个特殊数（5）的倍数，那么要说Buzz；
-  - 如果所报数字是第三个特殊数（7）的倍数，那么要说Whizz。
+3. 学生报数时, 如果所报数字是特殊数（3, 5, 7）的倍数，那么不能说该数字，而要说Fizz；
 
 
 编写Student的测试
 
 - 当三个特殊数是3、5、7时，学生1说1
 - 当三个特殊数是3、5、7时，学生3说Fizz
-- 当三个特殊数是3、5、7时，学生5说Buzz
-- 当三个特殊数是3、5、7时，学生7说Whizz
+- 当三个特殊数是3、5、7时，学生5说Fizz
+- 当三个特殊数是3、5、7时，学生7说Fizz
 
 
-- `$ git remote add upstream http://code.huawei.com/qixi/prs-capability.git`
-- `$ git fetch upstream master`
-- `$ git checkout -b 2-testing-framework upstream/master`
-
-
-- `$ sbt -mem 500`
-- `> ~test`
+`$ mvn test`
 
 
 ### IntelliJ IDEA 快捷键
@@ -213,6 +207,7 @@ Key                  | Description
 `Ctrl + Shift + F10` | Run test
 
 http://www.jetbrains.com/idea/docs/IntelliJIDEA_ReferenceCard.pdf
+
 
 
 ### Expected Exceptions
@@ -269,7 +264,17 @@ public void MyTest {
 ```
 
 
+
 ### Exercise 2
+
+游戏进行一轮后, 你决定增加游戏难度, 当学生报数时：
+  - 如果所报数字是第一个特殊数（3）的倍数，那么不能说该数字，而要说Fizz；
+  - 如果所报数字是第二个特殊数（5）的倍数，那么要说Buzz；
+  - 如果所报数字是第三个特殊数（7）的倍数，那么要说Whizz。
+
+
+
+### Exercise 3
 
 编写FizzGameTest的测试
 
@@ -279,9 +284,6 @@ public void MyTest {
 - 当输入是3、5、7时，学生5说Buzz
 
 
-
-### Exercise 3
-
 编写Student的测试
 
 - 当三个特殊数是3、5、7时，学生1说1
@@ -289,37 +291,6 @@ public void MyTest {
 - 当三个特殊数是4、5、6时，学生1说1
 - 当三个特殊数是4、5、6时，学生3说3
 - 当三个特殊数是4、5、6时，学生4说Fizz
-
-
-
-## Some(SSH keys)
-
-- http://code.huawei.com/qixi/prs-capability.git
-- git@code.huawei.com:qixi/prs-capability.git
-
-
-- `$ ssh-keygen -t rsa -C "qixi@huawei.com"`
-- `$ clip < ~/.ssh/id_rsa.pub`
-- Add SSH Key on Code Club
-
-
-
-## Some(build.sbt)
-
-```scala
-lazy val root = (project in file(".")).
-  settings(
-    name := "2-testing-framework",
-    version := "1.0",
-    scalaVersion := "2.11.4",
-    libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % "test",
-    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
-    libraryDependencies += "com.github.stefanbirkner" % "system-rules" % "1.11.0" % "test",
-    libraryDependencies += "commons-io" % "commons-io" % "2.0" % "test" force(),
-    crossPaths := false
-  )
-```
-
 
 
 ## Some(.gitignore)
@@ -333,7 +304,6 @@ target
 # will match hello and hellp but not hellop
 hell?
 ```
-
 
 
 ## 课后练习
