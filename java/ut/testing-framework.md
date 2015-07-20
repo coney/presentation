@@ -3,44 +3,69 @@
 
 
 ## Git
-- Git is a free and open source distributed version control system
-- Designed to handle everything from small to very large projects with speed and efficiency.
-
-
-### Why Git
+- http://git-scm.com/
+- Git is a free and opensource distributed version control system
+- The results of the 2014 Eclipse Community Survey show Git (33.3%) surpassing Subversion (30.7%) as expected from the trend in the previous year
 
 
 ### GitHub
 
+![GitHub](resources/github.png)
+
 
 ### GitLab(Code Club)
+
+![GitLab](resources/gitlab.png)
 
 
 ### Fork A Git Repositiory
 
+![Fork-1](resources/fork-1.png)
+
+
+![Fork-2](resources/fork-2.png)
+
 
 ### Clone The Repositiory
-```
-git clone http://some-repo.com/something
-```
+
+![clone](resources/clone.png)
+
+
+![git bash](resources/git-bash.jpg)
+
+$ git clone https://github.com/coney/linux.git
+
 
 ### Make Changes, Commit And Push
 ```
-git add *.java
-git commit -m "update sources"
-git push
+$ echo "Hello Linux" >> README
+$ git status
+
+$ git add .
+$ git status
+
+$ git commit -m "update README"
+$ git status
+
+$ git push
+$ git status
 ```
 
+
 ### Send Pull(Merge) Request
-put some pictures here
+
+![PR-1](resources/pr-1.png)
+
+
+![PR-2](resources/pr-2.png)
 
 
 
 ## JUnit
 
 - http://junit.org/
-- 是一个Java单元测试框架
-- A research survey performed in 2013 across 10,000 GitHub projects found that JUnit, along with slf4j-api, are the most popular libraries. Each library was used by 30.7% of projects.
+- JUnit is a simple framework to write repeatable tests
+- A research survey performed in 2013 across 10,000 GitHub projects found that JUnit, along with slf4j-api, are the most popular libraries. Each library was used by 30.7% of projects
 
 
 ### Create a test
@@ -103,7 +128,7 @@ Expected: is <true>
 
 ### matchers
 
-- org.hamcrest.CoreMatchers
+org.hamcrest.CoreMatchers
 
 ```java
 assertThat("good", is("good"));
@@ -172,44 +197,6 @@ test2
 ```
 
 
-
-### Exercise 1
-
-你是一名体育老师，在某次课距离下课还有五分钟时，你决定搞一个游戏。
-
-此时有100名学生在上课。游戏的规则是：
-
-1. 你首先说出三个不同的特殊数，要求必须是个位数，比如3、5、7。
-2. 让所有学生拍成一队，然后按顺序报数。
-3. 学生报数时, 如果所报数字是特殊数（3, 5, 7）的倍数，那么不能说该数字，而要说Fizz；
-
-
-编写Student的测试
-
-- 当三个特殊数是3、5、7时，学生1说1
-- 当三个特殊数是3、5、7时，学生3说Fizz
-- 当三个特殊数是3、5、7时，学生5说Fizz
-- 当三个特殊数是3、5、7时，学生7说Fizz
-
-
-`$ mvn test`
-
-
-### IntelliJ IDEA 快捷键
-
-Key                  | Description
--------------------- | -----------
-`Alt + Enter`        | Quick fixes
-`Ctrl + Shift + T`   | Create new test/go to test
-`Alt + Insert`       | Generate test
-`Ctrl + Alt + V`     | Extract variable
-`Ctrl + Alt + F`     | Extract field
-`Ctrl + Shift + F10` | Run test
-
-http://www.jetbrains.com/idea/docs/IntelliJIDEA_ReferenceCard.pdf
-
-
-
 ### Expected Exceptions
 
 ```java
@@ -248,33 +235,85 @@ public void shouldTestExceptionMessage() throws IndexOutOfBoundsException {
 ```
 
 
-### System Rules
 
-```java
-public void MyTest {
-	@Rule
-	public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
+## Exercise 1
 
-	@Test
-	public void writesTextToSystemOut() {
-		System.out.print("hello world");
-		assertEquals("hello world", systemOutRule.getLog());
-	}
-}
-```
+你是一名体育老师，在某次课距离下课还有五分钟时，你决定搞一个游戏。
+
+此时有100名学生在上课。游戏的规则是：
+
+1. 你首先说出三个不同的特殊数，要求必须是个位数，比如3、5、7。
+2. 让所有学生拍成一队，然后按顺序报数。
+3. 学生报数时, 如果所报数字是特殊数（3, 5, 7）的倍数，那么不能说该数字，而要说Fizz；
 
 
+编写Student的测试
 
-### Exercise 2
-
-游戏进行一轮后, 你决定增加游戏难度, 当学生报数时：
-  - 如果所报数字是第一个特殊数（3）的倍数，那么不能说该数字，而要说Fizz；
-  - 如果所报数字是第二个特殊数（5）的倍数，那么要说Buzz；
-  - 如果所报数字是第三个特殊数（7）的倍数，那么要说Whizz。
-
+- 当三个特殊数是3、5、7时，学生1说1
+- 当三个特殊数是3、5、7时，学生3说Fizz
+- 当三个特殊数是3、5、7时，学生5说Fizz
+- 当三个特殊数是3、5、7时，学生7说Fizz
 
 
-### Exercise 3
+`$ mvn test`
+
+
+### IntelliJ IDEA 快捷键
+
+Key                  | Description
+-------------------- | -----------
+`Alt + Enter`        | Quick fixes
+`Ctrl + Shift + T`   | Create new test/go to test
+`Alt + Insert`       | Generate test
+`Ctrl + Alt + V`     | Extract variable
+`Ctrl + Alt + F`     | Extract field
+`Ctrl + Shift + F10` | Run test
+`Shift + F10` | Run last test
+
+http://www.jetbrains.com/idea/docs/IntelliJIDEA_ReferenceCard.pdf
+
+
+
+## Exercise 2
+
+游戏进行一轮之后, 你决定增加一些游戏难度.
+
+学生们将按照如下规则重新进行报数:
+
+- 如果所报数字是第一个特殊数(3)的倍数，那么不能说该数字，而要说Fizz；
+- 如果所报数字是第二个特殊数(5)的倍数，那么要说Buzz；
+- 如果所报数字是第三个特殊数(7)的倍数，那么要说Whizz。
+
+
+编写Student的测试
+- 当三个特殊数是3、5、7时，学生**5**说Buzz
+- 运行测试
+
+<br/>
+
+完善Student的实现
+- 当学生所报数是**5**的倍数时, 学生改报Buzz
+- 运行测试
+
+
+编写Student的测试
+- 当三个特殊数是3、5、7时，学生**7**说Whizz
+- 运行测试
+
+<br/>
+
+完善Student的实现
+- 当学生所报数是**7**的倍数时, 学生改报Whizz
+- 运行测试
+
+
+### Test-driven development
+
+![tdd](resources/tdd.jpg)
+
+
+
+## Exercise 3
 
 编写FizzGameTest的测试
 
@@ -293,7 +332,7 @@ public void MyTest {
 - 当三个特殊数是4、5、6时，学生4说Fizz
 
 
-## Some(.gitignore)
+## .gitignore
 
 ```
 # idea project directory
@@ -306,11 +345,12 @@ hell?
 ```
 
 
+
 ## 课后练习
 
 - 需求
-
- 学生报数时，如果所报数字同时是两个特殊数的倍数情况下，也要特殊处理，比如第一个特殊数和第二个特殊数的倍数，那么不能说该数字，而是要说FizzBuzz，以此类推。如果同时是三个特殊数的倍数，那么要说FizzBuzzWhizz。
-
+  - 学生报数时，如果所报数字同时是两个特殊数的倍数情况下，也要特殊处理.
+  - 第一个特殊数和第二个特殊数的倍数，那么不能说该数字，而是要说FizzBuzz，以此类推。
+  - 如果同时是三个特殊数的倍数，那么要说FizzBuzzWhizz。
 - 有FizzGame和Student的测试和实现
 - 提交到Code Club上并发Merge Request
