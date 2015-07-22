@@ -123,7 +123,19 @@ public Student(List<GameRule> rules, int index) {
     this.index = index;
 }
 ```
-- 所有测试都要通过
+**所有测试都要通过**
+
+
+## Pull From Original Repo
+
+```
+# open git bash
+
+$ git remote add source http://host/user/project.git
+$ git pull source master
+
+# input commit message and save
+```
 
 
 ### IntelliJ IDEA 快捷键
@@ -132,6 +144,7 @@ Key                  | Description
 -------------------- | -----------
 `Ctrl + Alt + P`     | Extract parameter
 `Ctrl + F6`          | Change method signature
+`Ctrl + Alt + F`     | Extract field
 
 http://www.jetbrains.com/idea/docs/IntelliJIDEA_ReferenceCard.pdf
 
@@ -161,7 +174,7 @@ Note: 同时把MultipleGameRule等其他类引入了该测试
 
 ## SUT
 
-- System Under Test
+**System Under Test**
 
 
 ## Student的测试
@@ -170,10 +183,11 @@ Note: 同时把MultipleGameRule等其他类引入了该测试
  - Given两个规则
  - When第一个规则返回了Fizz
  - Then返回Fizz
+
 - Case 2
  - Given两个规则
  - When第一个规则没有返回值
- - 而第二个规则返回了Buzz
+ - And第二个规则返回了Buzz
  - Then返回Buzz
 
 
@@ -203,7 +217,10 @@ public void say_fizz_when_first_rule_return_fizz() throws Exception {
 ## Exercise 2
 
 实现Case 2
-
+- Given两个规则
+- When第一个规则没有返回值
+- And第二个规则返回了Buzz
+- Then返回Buzz
 
 
 ## Mockito
@@ -211,7 +228,7 @@ public void say_fizz_when_first_rule_return_fizz() throws Exception {
 ```java
 import static org.mockito.Mockito.*;
 
-List mockedList = mock(List.class);
+List<String> mockedList = mock(List.class);
 
 when(mockedList.get(0)).thenReturn("first");
 when(mockedList.get(1)).thenThrow(new RuntimeException());
@@ -225,20 +242,20 @@ assertThat(mockedList.get(0), is("first"));
 
 - Dummy
 
- objects are passed around but never actually used. Usually they are just used to fill parameter lists.
+ Objects are passed around but never actually used. Usually they are just used to fill parameter lists.
 
 - Fake
 
- objects actually have working implementations, but usually take some shortcut which makes them not suitable for production (an in memory database is a good example).
+ Objects actually have working implementations, but usually take some shortcut which makes them not suitable for production (an in memory database is a good example).
 
 
 - Stubs
 
- provide canned answers to calls made during the test, usually not responding at all to anything outside what's programmed in for the test. Stubs may also record information about calls, such as an email gateway stub that remembers the messages it 'sent', or maybe only how many messages it 'sent'.
+ Provide canned answers to calls made during the test, usually not responding at all to anything outside what's programmed in for the test. Stubs may also record information about calls, such as an email gateway stub that remembers the messages it 'sent', or maybe only how many messages it 'sent'.
 
 - Mocks
 
- objects pre-programmed with expectations which form a specification of the calls they are expected to receive.
+ Objects pre-programmed with expectations which form a specification of the calls they are expected to receive.
 
 
 ## Mockito Stub
