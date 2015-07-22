@@ -1,341 +1,324 @@
-# Java Unit Testing
+# Java Mocking
 
 
 
-## Git
-- http://git-scm.com/
-- Git is a free and opensource distributed version control system
-- The results of the 2014 Eclipse Community Survey show Git (33.3%) surpassing Subversion (30.7%) as expected from the trend in the previous year
+## Fizz Buzz Whizz
+
+你是一名体育老师，在某次课距离下课还有五分钟时，你决定搞一个游戏。
+
+首先你说出三个不同的特殊数, 要求必须是个位数, 比如3, 5, 7.
+
+此时上课的100名学生拍成一队, 按顺序进行报数.
 
 
-### GitHub
-
-![GitHub](resources/github.png)
-
-
-### GitLab(Code Club)
-
-![GitLab](resources/gitlab.png)
+### 规则一
+- 如果所报数字是第一个特殊数(3)的倍数, 那么不能说该数字, 而要说Fizz
+- 如果所报数字是第二个特殊数(5)的倍数, 那么要说Buzz
+- 如果所报数字是第三个特殊数(7)的倍数, 那么要说Whizz.
 
 
-### Fork A Git Repositiory
-
-![Fork-1](resources/fork-1.png)
-
-
-![Fork-2](resources/fork-2.png)
+### 规则二
+- 如果所报数字同时是两个特殊数的倍数情况下, 那么不能说该数字, 而是要说FizzBuzz, 以此类推.
+- 例如要报15的同学数字同时是第一个特殊数(3)和第二个特殊数(5)的倍数, 所以要说FizzBuzz.
+- 如果所报数字同时是三个特殊数的倍数, 那么要说FizzBuzzWhizz.
 
 
-### Clone The Repositiory
-
-![clone](resources/clone.png)
-
-
-![git bash](resources/git-bash.jpg)
-
-$ git clone https://github.com/coney/linux.git
-
-
-### Make Changes, Commit And Push
-```
-$ echo "Hello Linux" >> README
-$ git status
-
-$ git add .
-$ git status
-
-$ git commit -m "update README"
-$ git status
-
-$ git push
-$ git status
-```
-
-
-### Send Pull(Merge) Request
-
-![PR-1](resources/pr-1.png)
-
-
-![PR-2](resources/pr-2.png)
+### 规则三
+- 如果所报数字包含了第一个特殊数, 那么也不能说该数字, 同时忽略规则一和规则二, 而是要说相应的单词.
+- 例如要报13的同学数字中包含了第一个特殊数(3), 所以应该说Fizz, 而不是13.
+- 例如要报35的同学数字中包含了第一个特殊数(3), 所以应该说Fizz, 而不是BuzzWhizz.
 
 
 
-## JUnit
+## 现状
 
-- http://junit.org/
-- JUnit is a simple framework to write repeatable tests
-- A research survey performed in 2013 across 10,000 GitHub projects found that JUnit, along with slf4j-api, are the most popular libraries. Each library was used by 30.7% of projects
-
-
-### Create a test
-
-``` java
-import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
-
-public class MyTest {
-    @Test
-    public void testNewArray() throws Exception {
-        final boolean result = false;
-        assertTrue(result);
+```java
+public String say() {
+    final StringBuilder sb = new StringBuilder();
+    if (index % fizzGame.getNumber1() == 0) {
+        sb.append("Fizz");
     }
-}
-```
-
-
-### Assertions
-
-```
-java.lang.AssertionError
-	at org.junit.Assert.fail(Assert.java:86)
-	at org.junit.Assert.assertTrue(Assert.java:41)
-	at org.junit.Assert.assertTrue(Assert.java:52)
-	at macdao.MyTest.testNewArray(MyTest.java:11)
-```
-
-
-### assertThat
-
-```java
-assertThat([value], [matcher statement]);
-```
-
-Note: Joe Walnes built a new assertion mechanism on top of what was then JMock 1
-
-
-```java
-import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-public class MyTest {
-    @Test
-    public void testNewArray() throws Exception {
-        final boolean result = false;
-        assertThat(result, is(true));
+    if (index % fizzGame.getNumber2() == 0) {
+        sb.append("Buzz");
     }
-}
-
-```
-```
-Expected: is <true>
-     but: was <false>
-```
-
-
-### matchers
-
-org.hamcrest.CoreMatchers
-
-```java
-assertThat("good", is("good"));
-
-assertThat(new Object(), notNullValue());
-
-assertThat(new Object(), not(sameInstance(new Object())));
-
-assertThat("good", startsWith("goo"));
-
-assertThat(Arrays.asList(1, 2), hasItem(1));
-```
-
-
-```java
-assertThat("fab", both(containsString("a")).and(containsString("b")));
-
-assertThat("good", not(allOf(equalTo("bad"), equalTo("good"))));
-
-assertThat("good", anyOf(equalTo("bad"), equalTo("good")));
-
-assertThat(7, not(either(equalTo(3)).or(equalTo(4))));
-```
-
-
-### Ignoring a Test
-
-```java
-@Ignore("Test is ignored as a demonstration")
-@Test
-public void testSame() {
-    assertThat(1, is(1));
-}
-```
-
-
-### fixture annotations
-
-```java
-import org.junit.*;
-import static java.lang.System.out;
-public class MyTest {
-    @BeforeClass
-    public static void setUpClass() { out.println("@BeforeClass"); }
-    @AfterClass
-    public static void tearDownClass() { out.println("@AfterClass"); }
-    @Before
-    public void setUp() throws Exception { out.println("@Before"); }
-    @After
-    public void tearDown() throws Exception { out.println("@After"); }
-    @Test
-    public void test1() throws Exception { out.println("test1"); }
-    @Test
-    public void test2() throws Exception { out.println("test2"); }
-}
-```
-```
-@BeforeClass
-@Before
-test1
-@After
-@Before
-test2
-@After
-@AfterClass
-```
-
-
-### Expected Exceptions
-
-```java
-@Test(expected = IndexOutOfBoundsException.class)
-public void empty() {
-     new ArrayList<Object>().get(0);
-}
-```
-
-
-```java
-@Test
-public void testExceptionMessage() {
-    try {
-        new ArrayList<Object>().get(0);
-        fail("Expected an IndexOutOfBoundsException to be thrown");
-    } catch (IndexOutOfBoundsException exception) {
-        assertThat(exception.getMessage(), is("Index: 0, Size: 0"));
+    if (index % fizzGame.getNumber3() == 0) {
+        sb.append("Whizz");
     }
+    if (sb.length() != 0) {
+        return sb.toString();
+    }
+    return String.valueOf(index);
 }
 ```
 
+Note: 违反了开闭原则；存在两个规则
+
+
+# Tasking
+
+- 重构当前代码, 支持增加新的规则
+- 增加新的规则
+
+
+## 重构
+
+```java
+private List<GameRule> rules;
+
+public String say() {
+    for (GameRule rule : rules) {
+        final Optional<String> result = rule.say(index);
+        if (result.isPresent()) {
+            return result.get();
+        }
+    }
+
+    throw new IllegalStateException();
+}
+```
+
+Note: 先重构再增加新功能；简单设计
+
+
+## rules的创建
+
+```java
+public Student(FizzGame fizzGame, int index) {
+    rules = Lists.newArrayList(new MultipleGameRule(fizzGame), new DefaultGameRule());
+    this.index = index;
+}
+```
+
+Note: 违反了依赖反转原则
+
+
+<!-- .slide: data-background="white" -->
+
+## Inversion of Control(控制反转)
+
+![The dependencies using a simple creation in the lister class](resources/naive.gif)
+
+*Figure 1 shows the dependencies for this situation. The MovieLister class is dependent on both the MovieFinder interface and upon the implementation.*
+
+
+<!-- .slide: data-background="white" -->
+
+### Dependency Injection(依赖注入)
+
+![The dependencies for a Dependency Injector](resources/injector.gif)
+
+*Figure 2: The dependencies for a Dependency Injector*
+
+
+### IoC
+
+The main control of the program was inverted, moved away from you to the framework.
 
 
 ## Exercise 1
 
-你是一名体育老师，在某次课距离下课还有五分钟时，你决定搞一个游戏。
-
-此时有100名学生在上课。游戏的规则是：
-
-1. 你首先说出三个不同的特殊数，要求必须是个位数，比如3、5、7。
-2. 让所有学生拍成一队，然后按顺序报数。
-3. 学生报数时, 如果所报数字是特殊数（3, 5, 7）的倍数，那么不能说该数字，而要说Fizz；
-
-
-编写Student的测试
-
-- 当三个特殊数是3、5、7时，学生1说1
-- 当三个特殊数是3、5、7时，学生3说Fizz
-- 当三个特殊数是3、5、7时，学生5说Fizz
-- 当三个特殊数是3、5、7时，学生7说Fizz
-
-
-`$ mvn test`
+```java
+public Student(List<GameRule> rules, int index) {
+    this.rules = rules;
+    this.index = index;
+}
+```
+- 所有测试都要通过
 
 
 ### IntelliJ IDEA 快捷键
 
 Key                  | Description
 -------------------- | -----------
-`Alt + Enter`        | Quick fixes
-`Ctrl + Shift + T`   | Create new test/go to test
-`Alt + Insert`       | Generate test
-`Ctrl + Alt + V`     | Extract variable
-`Ctrl + Alt + F`     | Extract field
-`Ctrl + Shift + F10` | Run test
-`Shift + F10` | Run last test
+`Ctrl + Alt + P`     | Extract parameter
+`Ctrl + F6`          | Change method signature
 
 http://www.jetbrains.com/idea/docs/IntelliJIDEA_ReferenceCard.pdf
 
 
 
+# Mock
+
+
+## 测试Student
+
+反例
+
+```java
+@Test
+public void student_1_should_say_1() throws Exception {
+    final MultipleGameRule rule1 = new MultipleGameRule(fizzGame);
+    final DefaultGameRule rule2 = new DefaultGameRule();
+    final ArrayList<GameRule> rules = Lists.newArrayList(rule1, rule2);
+    final Student student = new Student(rules, 1);
+
+    assertThat(student.say(), is("1"));
+}
+```
+
+Note: 同时把MultipleGameRule等其他类引入了该测试
+
+
+## SUT
+
+- System Under Test
+
+
+## Student的测试
+
+- Case 1
+ - Given两个规则
+ - When第一个规则返回了Fizz
+ - Then返回Fizz
+- Case 2
+ - Given两个规则
+ - When第一个规则没有返回值
+ - 而第二个规则返回了Buzz
+ - Then返回Buzz
+
+
+## Case 1
+
+```java
+@Test
+public void say_fizz_when_first_rule_return_fizz() throws Exception {
+    final GameRule rule1 = new GameRule() {
+        @Override
+        public Optional<String> say(int index) {
+            return Optional.of("Fizz");
+        }
+    };
+    final GameRule rule2 = new GameRule() {
+        @Override
+        public Optional<String> say(int index) {
+            return Optional.absent();
+        }
+    };
+    final Student student = new Student(Lists.newArrayList(rule1, rule2), 1);
+    assertThat(student.say(), is("Fizz"));
+}
+```
+
+
 ## Exercise 2
 
-游戏进行一轮之后, 你决定增加一些游戏难度.
-
-学生们将按照如下规则重新进行报数:
-
-- 如果所报数字是第一个特殊数(3)的倍数，那么不能说该数字，而要说Fizz；
-- 如果所报数字是第二个特殊数(5)的倍数，那么要说Buzz；
-- 如果所报数字是第三个特殊数(7)的倍数，那么要说Whizz。
+实现Case 2
 
 
-编写Student的测试
-- 当三个特殊数是3、5、7时，学生**5**说Buzz
-- 运行测试
 
-<br/>
+## Mockito
 
-完善Student的实现
-- 当学生所报数是**5**的倍数时, 学生改报Buzz
-- 运行测试
+```java
+import static org.mockito.Mockito.*;
 
+List mockedList = mock(List.class);
 
-编写Student的测试
-- 当三个特殊数是3、5、7时，学生**7**说Whizz
-- 运行测试
+when(mockedList.get(0)).thenReturn("first");
+when(mockedList.get(1)).thenThrow(new RuntimeException());
 
-<br/>
+assertThat(mockedList.get(0), is("first"));
 
-完善Student的实现
-- 当学生所报数是**7**的倍数时, 学生改报Whizz
-- 运行测试
+```
 
 
-### Test-driven development
+## Test Double
 
-![tdd](resources/tdd.jpg)
+- Dummy
 
+ objects are passed around but never actually used. Usually they are just used to fill parameter lists.
+
+- Fake
+
+ objects actually have working implementations, but usually take some shortcut which makes them not suitable for production (an in memory database is a good example).
+
+
+- Stubs
+
+ provide canned answers to calls made during the test, usually not responding at all to anything outside what's programmed in for the test. Stubs may also record information about calls, such as an email gateway stub that remembers the messages it 'sent', or maybe only how many messages it 'sent'.
+
+- Mocks
+
+ objects pre-programmed with expectations which form a specification of the calls they are expected to receive.
+
+
+## Mockito Stub
+
+```java
+Car boringStubbedCar = when(mock(Car.class).shiftGear())
+        .thenThrow(EngineNotStarted.class)
+        .getMock();
+
+doThrow(new RuntimeException()).when(mockedList).clear();
+```
+
+
+## Mockito Mock
+
+```java
+List mockedList = mock(List.class);
+
+mockedList.add("one");
+mockedList.clear();
+
+verify(mockedList).add("one");
+verify(mockedList).clear();
+```
+
+
+## Argument matchers
+
+```java
+when(mockedList.get(anyInt())).thenReturn("element");
+
+assertThat(mockedList.get(999), is("element"));
+
+verify(mockedList).get(anyInt());
+```
+
+
+## Verifying number of invocations
+
+```java
+mockedList.add("twice");
+mockedList.add("twice");
+
+mockedList.add("three times");
+mockedList.add("three times");
+mockedList.add("three times");
+
+verify(mockedList, times(2)).add("twice");
+
+verify(mockedList, never()).add("never happened");
+verify(mockedList, atLeastOnce()).add("three times");
+verify(mockedList, atLeast(2)).add("five times");
+verify(mockedList, atMost(5)).add("three times");
+```
 
 
 ## Exercise 3
 
-编写FizzGameTest的测试
-
-- 输出应该是100行
-- 当输入是3、5、7时，学生1说1
-- 当输入是3、5、7时，学生3说Fizz
-- 当输入是3、5、7时，学生5说Buzz
+- 把StudentTest用Mockito改写
 
 
-编写Student的测试
+## 重构完成
 
-- 当三个特殊数是3、5、7时，学生1说1
-- 当三个特殊数是3、5、7时，学生3说Fizz
-- 当三个特殊数是4、5、6时，学生1说1
-- 当三个特殊数是4、5、6时，学生3说3
-- 当三个特殊数是4、5、6时，学生4说Fizz
-
-
-## .gitignore
-
-```
-# idea project directory
-.idea/
-target
-# will match my.o and my.a
-*.[oa]
-# will match hello and hellp but not hellop
-hell?
-```
+- <del>重构当前代码, 支持增加新的规则</del>
+- 增加新的规则
 
 
 
-## 课后练习
+# 课后练习
 
-- 需求
-  - 学生报数时，如果所报数字同时是两个特殊数的倍数情况下，也要特殊处理.
-  - 第一个特殊数和第二个特殊数的倍数，那么不能说该数字，而是要说FizzBuzz，以此类推。
-  - 如果同时是三个特殊数的倍数，那么要说FizzBuzzWhizz。
-- 有FizzGame和Student的测试和实现
-- 提交到Code Club上并发Merge Request
+- 完成新的规则的测试和实现
+- 为MultipleGameRule编写Java测试
+- 为DefaultGameRule编写Java测试
+- Merge Request
+
+
+
+# 参考资料
+
+- [SOLID](https://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29)
+- [Inversion of Control Containers and the Dependency Injection pattern](http://www.martinfowler.com/articles/injection.html)
+- [Mocks Aren't Stubs](http://martinfowler.com/articles/mocksArentStubs.html)
+- [Mockito](http://site.mockito.org/mockito/docs/current/org/mockito/Mockito.html)
