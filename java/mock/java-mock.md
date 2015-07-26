@@ -1,4 +1,5 @@
 # Java Mocking
+note: reference from https://github.com/macdao/presentations/blob/gh-pages/huawei-mock.md
 
 
 

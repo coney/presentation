@@ -1,6 +1,5 @@
 # Java Unit Testing
-
-
+note: reference from https://github.com/macdao/presentations/blob/gh-pages/huawei-testing-framework.md
 
 ## Git
 - http://git-scm.com/
