@@ -3,117 +3,10 @@ note: reference from https://github.com/macdao/presentations/blob/gh-pages/huawe
 
 
 
-## [Google Contacts API version 3.0](https://developers.google.com/google-apps/contacts/v3/)
-
-
-### Retrieving all contacts
-
-#####Request
-
-```
-GET /m8/feeds/contacts/default/full
-```
-#####Response
-
-```
-HTTP/1.1 200 OK
-Content-Type: application/atom+xml; charset=UTF-8; type=feed
-...
-
-<feed>
-  <id>userEmail</id>
-  <updated>2008-12-10T10:04:15.446Z</updated>
-  <entry>
-    <id>
-      http://www.google.com/m8/feeds/contacts/userEmail/base/contactId
-    </id>
-  </entry>
-  <!-- Other entries ... -->
-</feed>
-```
-
-
-### Retrieving contacts using query parameters
-
-`GET https://www.google.com/m8/feeds/contacts/{userEmail}/full?updated-min=2007-03-16T00:00:00`
-
-
-### Retrieving a single contact
-
-#####Request
-
-```
-GET /m8/feeds/contacts/default/full/{contactId}
-```
-#####Response
-
-```
-HTTP/1.1 200 OK
-Content-Type: application/atom+xml; charset=UTF-8; type=feed
-...
-
-<entry>
-  <id>
-    http://www.google.com/m8/feeds/contacts/{userEmail}/base/{contactId}
-  </id>
-</entry>
-```
-
-
-### Creating contacts
-
-#####Request
-
-```
-POST /m8/feeds/contacts/default/full
-...
-<atom:entry>
-  <atom:category scheme='http://schemas.google.com/g/2005#kind'
-    term='http://schemas.google.com/contact/2008#contact'/>
-  <gd:name>
-     <gd:givenName>Elizabeth</gd:givenName>
-     <gd:familyName>Bennet</gd:familyName>
-  </gd:name>
-</atom:entry>
-```
-#####Response
-
-```
-HTTP/1.1 201 Created
-Content-Type: application/atom+xml; charset=UTF-8; type=feed
-...
-<atom:entry>
-  <id>http://www.google.com/m8/feeds/contacts/userEmail</bar>/base/{contactId}</id>
-  <updated>2008-12-10T04:45:03.331Z</updated>
-  <title>Elizabeth Bennet</title>
-  <gd:name>
-     <gd:givenName>Elizabeth</gd:givenName>
-     <gd:familyName>Bennet</gd:familyName>
-  </gd:name>
-</atom:entry>
-```
-
-
-### Deleting contacts
-
-#####Request
-
-```
-DELETE /m8/feeds/contacts/default/full/contactId
-If-match: Etag
-```
-#####Response
-
-```
-HTTP/1.1 200 OK
-```
-
-
-
 ## Representational State Transfer (REST)
 
-- is a software architecture style
-- consisting of guidelines and best practices for creating scalable web services.
+- Is a software architecture **style**
+- Consisting of guidelines and best practices for creating scalable web services.
 - "Architectural Styles and the Design of Network-based Software Architectures"
 
 
@@ -121,9 +14,9 @@ HTTP/1.1 200 OK
 
 ![Roy Thomas Fielding](res/roy_fielding.jpg)
 
-- principal authors of the HTTP specification
-- co-founder of the Apache HTTP Server project
-- the chair of the Apache Software Foundation for its first three years
+- Principal authors of the HTTP specification
+- Co-founder of the Apache HTTP Server project
+- The chair of the Apache Software Foundation for its first three years
 
 
 > 在为HTTP/1.1和URI的新标准设计扩展时，我认识到需要建立一个关于万维网应该如何运转的模型。这个关于整个Web应用中的交互的理想化的模型被称作表述性状态转移(REST)架构风格，成为了现代Web架构的基础。
@@ -142,9 +35,33 @@ HTTP/1.1 200 OK
 - Code-On-Demand (optional)
 
 
+### Client-Server
+![Client-Server](res/cs.png)
+
+
+### Stateless
+![Client-Server](res/stateless.png)
+
+
+### Cache
+![Client-Server](res/ccss.png)
+
+
+### Uniform Interface
+![Client-Server](res/uccss.png)
+
+
+### Layered System
+![Client-Server](res/layered.png)
+
+
+### Code-On-Demand (optional)
+![Client-Server](res/cod.png)
+
+
 ### REST架构过程视图
 
-![REST Process View](res/rest_process_view.gif)
+![REST Process View](res/rest-process-view.png)
 
 
 按照Fielding的描述，REST的统一接口由4个部分组成：
