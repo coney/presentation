@@ -1,11 +1,11 @@
-# RESTful APIs
+# RESTful API Design
 note: reference from https://github.com/macdao/presentations/blob/gh-pages/huawei-restful-apis.md
 
 
 
-## Representational State Transfer (REST)
+## Representational State Transfer (REST, 表述性状态转移)
 
-- Is a software architecture **style**
+- Is a software **architecture style**
 - Consisting of guidelines and best practices for creating scalable web services.
 - "Architectural Styles and the Design of Network-based Software Architectures"
 
@@ -19,10 +19,10 @@ note: reference from https://github.com/macdao/presentations/blob/gh-pages/huawe
 - The chair of the Apache Software Foundation for its first three years
 
 
-> 在为HTTP/1.1和URI的新标准设计扩展时，我认识到需要建立一个关于万维网应该如何运转的模型。这个关于整个Web应用中的交互的理想化的模型被称作表述性状态转移(REST)架构风格，成为了现代Web架构的基础。
+> 在为HTTP/1.1和URI的新标准设计扩展时, 我认识到需要建立一个关于万维网应该如何运转的模型.这个关于整个Web应用中的交互的理想化的模型被称作表述性状态转移(REST)架构风格, 成为了现代Web架构的基础.
 
 
-> 这个名称“表述性状态转移”是有意唤起人们对于一个良好设计的Web应用如何运转的印象：一个由网页组成的网络（一个虚拟的状态机），用户通过选择链接（状态迁移）在应用中前进，导致下一个页面（展现应用的下一个状态）被转移给用户，并且呈现给他们，以便他们来使用。
+> 这个名称“表述性状态转移”是有意唤起人们对于一个良好设计的Web应用如何运转的印象：一个由网页组成的网络(一个虚拟的状态机), 用户通过选择链接(状态迁移)在应用中前进, 导致下一个页面(展现应用的下一个状态)被转移给用户, 并且呈现给他们, 以便他们来使用.
 
 
 ### REST架构约束
@@ -32,7 +32,7 @@ note: reference from https://github.com/macdao/presentations/blob/gh-pages/huawe
 - Cache
 - Uniform Interface
 - Layered System
-- Code-On-Demand (optional)
+- Code-On-Demand(optional)
 
 
 ### Client-Server
@@ -51,6 +51,14 @@ note: reference from https://github.com/macdao/presentations/blob/gh-pages/huawe
 ![Client-Server](res/uccss.png)
 
 
+### REST 统一接口约束
+
+- 资源的标识
+- 通过表述对资源执行的操作
+- 自描述的消息
+- 超媒体作为应用状态引擎(HATEOAS)
+
+
 ### Layered System
 ![Client-Server](res/layered.png)
 
@@ -64,90 +72,85 @@ note: reference from https://github.com/macdao/presentations/blob/gh-pages/huawe
 ![REST Process View](res/rest-process-view.png)
 
 
-按照Fielding的描述，REST的统一接口由4个部分组成：
+### REST 统一接口约束
 
 - 资源的标识
 - 通过表述对资源执行的操作
 - 自描述的消息
-- 以及超媒体作为应用状态引擎（现在通常缩写为HATEOAS）
+- 超媒体作为应用状态引擎(Hypermedia As The Engine Of Application State, HATEOAS)
 
 
-以HTTP为例
+### 以HTTP为例
 
 - 资源的标识就是资源的URI
-- 资源的表述是资源在特定时刻状态的描述，可以通过在客户-服务器之间传递资源的表述，对资源执行某种操作
+- 资源的表述是资源在特定时刻状态的描述, 可以通过在客户-服务器之间传递资源的表述, 对资源执行某种操作
 - 自描述的消息由一些标准的HTTP方法、可定制的HTTP头信息、可定制的HTTP响应代码组成
-- 超媒体就是HTML，可以使用HTML作为引擎，驱动应用状态的迁移。
+- 超媒体就是HTML, 可以使用HTML作为引擎, 驱动应用状态的迁移.
 
 
 ### 资源
 
-- REST对于信息的核心抽象是资源。
+- REST对于信息的核心抽象是资源.
 - 任何能够被命名的信息都能够作为一个资源：
  - 一份文档或
  - 一张图片
  - 一个与时间相关的服务(比如洛杉矶今日的天气)
  - 一个其他资源的集合
- - 一个非虚拟的对象(比如一个人)等等。
-
-
- - 一篇学术论文的创作者首选的版本
- - X会议学报中发表的论文
- - 最新版本
- - 版本号1.2.7
- - 包含有Orange功能实现的修订版本
-
-
-### 资源标识符
-
-- REST使用一个资源标识符来标识特定资源
-- REST被用来为URI标准定义术语“资源”
+ - 一个非虚拟的对象(比如一个人)等等.
+- 与面向对象设计类似, 资源是以名词为核心来组织的, 首先关注的是名词
 
 
 ### 表述
 
-- REST组件通过以下方式在一个资源上执行动作：使用一个表述来捕获资源的当前的或预期的状态，并在组件之间传递该表述。
-- 表述的其他常用但不够精确的名称包括：文档、文件、HTTP消息实体、实例或变量。
-- 表述由数据、描述数据的元数据、以及（有时候存在的）描述元数据的元数据组成（通常用来验证消息的完整性）。
-
-
-### REST Applied to HTTP
-
-HTTP请求的语义通过请求方法的名称来表示
-
-
-### Response Status Codes
-
-- 100-199表示消息中包含一个临时的信息响应
-- 200-299表示请求成功
-- 300-399表示请求需要被重定向到另一个资源
-- 400－499表示客户端发生了一个不应该重复的错误
-- 500-599表示服务器端遇到了一个错误，但是客户端稍后可以得到一个更好的响应（或者通过某个其他服务器）
+- 资源的表述是一段对于资源在某个特定时刻的状态的描述, 可以在客户端-服务器端之间转移(交换)
+- 资源的表述可以有多种格式, 例如HTML/XML/JSON/纯文本/图片/视频/音频等等.
+- 资源的表述格式可以通过协商机制来确定.请求-响应方向的表述通常使用不同的格式.
 
 
 ### 自描述的消息
+
+#### 标准的HTTP方法
+  - GET
+  - POST
+  - PUT
+  - DELETE
+
+
+#### 可定制的HTTP响应代码
+  - 100-199表示消息中包含一个临时的信息响应
+  - 200-299表示请求成功
+  - 300-399表示请求需要被重定向到另一个资源
+  - 400-499表示客户端发生了一个不应该重复的错误
+  - 500-599表示服务器端遇到了一个错误, 但是客户端稍后可以得到一个更好的响应(或者通过某个其他服务器)
+
+
+#### HTTP Headers
 
 - 主机
 - 分层的编码
 - 语义独立性
 - 传输独立性
-- 尺寸限制
 - 缓存控制
 - 内容协商
 
 
-### 内容协商
+### 超媒体作为应用状态的引擎
 
-REST组件通过转移一种表述来进行通信，REST组件可以基于接收者的能力或者其期待的内容，以及资源的性质来动态地选择不同的表述
+- 将Web应用看作是一个由很多状态(应用状态)组成的有限状态机
+- 资源之间通过超链接相互关联, 超链接既代表资源之间的关系, 也代表可执行的状态迁移
+- 以超媒体作为引擎, 驱动Web应用的状态迁移
+- 通过超媒体暴露出服务器所提供的资源, 资源通过解析超媒体发现的, 而不是事先定义的
+
 
 
 
 ## RESTful APIs
 
-- 遵守REST架构约束的Web service APIs被称作RESTful APIs
+- 遵守REST架构约束的Web Service APIs被称作RESTful APIs
 
 
 ### Richardson Maturity Model
+
 ![Richardson Maturity Model](res/overview.png)
 
 
@@ -366,6 +369,7 @@ Location: http://royalhope.nhs.uk/slots/1234/appointment
 ```
 
 
+
 ### Example 1
 
 Resource | Collection URI, such as http://api.example.com/v1/resources/
@@ -386,7 +390,7 @@ DELETE   | Delete the addressed member of the collection.
 
 ### Example 2
 
-A request for the base resource / might return something like this:
+A request to root / might return something like this:
 
 #####Request
 
@@ -399,17 +403,16 @@ Accept: application/json+userdb
 ```
 200 OK
 Content-Type: application/json+userdb
-
 {
     "version": "1.0",
     "links": [
         {
-            "href": "/user",
+            "href": "/users",
             "rel": "list",
             "method": "GET"
         },
         {
-            "href": "/user",
+            "href": "/users",
             "rel": "create",
             "method": "POST"
         }
@@ -418,12 +421,12 @@ Content-Type: application/json+userdb
 ```
 
 
-we can find a user list by making another request for /user:
+List users by making another request to /users:
 
 #####Request
 
 ```
-GET /user
+GET /users
 Accept: application/json+userdb
 ```
 
@@ -432,7 +435,6 @@ Accept: application/json+userdb
 ```
 200 OK
 Content-Type: application/json+userdb
-
 {
     "users": [
         {
@@ -441,17 +443,17 @@ Content-Type: application/json+userdb
             "country": "Sweden",
             "links": [
                 {
-                    "href": "/user/1",
+                    "href": "/users/1",
                     "rel": "self",
                     "method": "GET"
                 },
                 {
-                    "href": "/user/1",
+                    "href": "/users/1",
                     "rel": "edit",
                     "method": "PUT"
                 },
                 {
-                    "href": "/user/1",
+                    "href": "/users/1",
                     "rel": "delete",
                     "method": "DELETE"
                 }
@@ -463,17 +465,17 @@ Content-Type: application/json+userdb
             "country": "Scotland",
             "links": [
                 {
-                    "href": "/user/2",
+                    "href": "/users/2",
                     "rel": "self",
                     "method": "GET"
                 },
                 {
-                    "href": "/user/2",
+                    "href": "/users/2",
                     "rel": "edit",
                     "method": "PUT"
                 },
                 {
-                    "href": "/user/2",
+                    "href": "/users/2",
                     "rel": "delete",
                     "method": "DELETE"
                 }
@@ -482,7 +484,7 @@ Content-Type: application/json+userdb
     ],
     "links": [
         {
-            "href": "/user",
+            "href": "/users",
             "rel": "create",
             "method": "POST"
         }
@@ -491,19 +493,15 @@ Content-Type: application/json+userdb
 ```
 
 
-we can create a new user by POSTing to /user:
+Create a new user by POSTing to /users:
 
 #####Request
 
 ```
-POST /user
+POST /users
 Accept: application/json+userdb
 Content-Type: application/json+userdb
-
-{
-    "name": "Karl",
-    "country": "Austria"
-}
+{ "name": "Karl", "country": "Austria" }
 ```
 
 #####Response
@@ -511,32 +509,31 @@ Content-Type: application/json+userdb
 ```
 201 Created
 Content-Type: application/json+userdb
-
 {
-    "user": {
+    "users": {
         "id": 3,
         "name": "Karl",
         "country": "Austria",
         "links": [
             {
-                "href": "/user/3",
+                "href": "/users/3",
                 "rel": "self",
                 "method": "GET"
             },
             {
-                "href": "/user/3",
+                "href": "/users/3",
                 "rel": "edit",
                 "method": "PUT"
             },
             {
-                "href": "/user/3",
+                "href": "/users/3",
                 "rel": "delete",
                 "method": "DELETE"
             }
         ]
     },
     "links": {
-       "href": "/user",
+       "href": "/users",
        "rel": "list",
        "method": "GET"
     }
@@ -544,19 +541,15 @@ Content-Type: application/json+userdb
 ```
 
 
-we can change existing data:
+Change the existing user:
 
 #####Request
 
 ```
-PUT /user/1
+PUT /users/1
 Accept: application/json+userdb
 Content-Type: application/json+userdb
-
-{
-    "name": "Emil",
-    "country": "Bhutan"
-}
+{ "name": "Emil", "country": "Bhutan" }
 ```
 
 #####Response
@@ -564,37 +557,63 @@ Content-Type: application/json+userdb
 ```
 200 OK
 Content-Type: application/json+userdb
-
 {
-    "user": {
+    "users": {
         "id": 1,
         "name": "Emil",
         "country": "Bhutan",
         "links": [
             {
-                "href": "/user/1",
+                "href": "/users/1",
                 "rel": "self",
                 "method": "GET"
             },
             {
-                "href": "/user/1",
+                "href": "/users/1",
                 "rel": "edit",
                 "method": "PUT"
             },
             {
-                "href": "/user/1",
+                "href": "/users/1",
                 "rel": "delete",
                 "method": "DELETE"
             }
         ]
     },
     "links": {
-       "href": "/user",
+       "href": "/users",
        "rel": "list",
        "method": "GET"
     }
 }
 ```
+
+
+### Anti-Patterns
+
+`GET http://api.example.com/services?op=update_customer&id=12345&format=json`
+
+
+`GET http://api.example.com/update_customer/12345`
+
+
+`GET http://api.example.com/customers/12345/update`
+
+
+`PUT http://api.example.com/customers/12345/update`
+
+
+`PUT http://api.example.com/customers/12345`
+
+
+### Idempotence(幂等)
+
+> From a RESTful service standpoint, for an operation (or service call) to be idempotent, clients can make that same call repeatedly while producing the same result.
+
+
+- **POST** is not idempotent.
+- **PUT** and **DELETE** are defined to be idempotent.
+- **GET** is defined as safe, meaning they are only intended for retrieving data.
 
 
 
