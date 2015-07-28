@@ -92,7 +92,7 @@ note: reference from https://github.com/macdao/presentations/blob/gh-pages/huawe
 
 - REST对于信息的核心抽象是资源.
 - 任何能够被命名的信息都能够作为一个资源：
- - 一份文档或
+ - 一份文档
  - 一张图片
  - 一个与时间相关的服务(比如洛杉矶今日的天气)
  - 一个其他资源的集合
@@ -134,13 +134,26 @@ note: reference from https://github.com/macdao/presentations/blob/gh-pages/huawe
 - 内容协商
 
 
-### 超媒体作为应用状态的引擎
+#### 超媒体作为应用状态的引擎
 
 - 将Web应用看作是一个由很多状态(应用状态)组成的有限状态机
 - 资源之间通过超链接相互关联, 超链接既代表资源之间的关系, 也代表可执行的状态迁移
 - 以超媒体作为引擎, 驱动Web应用的状态迁移
 - 通过超媒体暴露出服务器所提供的资源, 资源通过解析超媒体发现的, 而不是事先定义的
 
+
+### REST架构约束
+
+- Client-Server
+- Stateless
+- Cache
+- Uniform Interface
+  - 资源
+  - 表述
+  - 自描述消息
+  - HATEOAS
+- Layered System
+- Code-On-Demand(optional)
 
 
 
@@ -369,6 +382,17 @@ Location: http://royalhope.nhs.uk/slots/1234/appointment
 ```
 
 
+### REST 统一接口约束
+- Level 1 - Resources
+  - 资源的标识
+- Level 2 - HTTP Verbs
+  - 通过表述对资源执行的操作
+  - 自描述的消息
+- Level 3 - Hypermedia Controls
+  - 超媒体作为应用状态引擎(HATEOAS)
+
+
+
 
 ### Example 1
 
@@ -396,13 +420,13 @@ A request to root / might return something like this:
 
 ```
 GET /
-Accept: application/json+userdb
+Accept: application/json
 ```
 #####Response
 
 ```
 200 OK
-Content-Type: application/json+userdb
+Content-Type: application/json
 {
     "version": "1.0",
     "links": [
@@ -427,14 +451,14 @@ List users by making another request to /users:
 
 ```
 GET /users
-Accept: application/json+userdb
+Accept: application/json
 ```
 
 #####Response
 
 ```
 200 OK
-Content-Type: application/json+userdb
+Content-Type: application/json
 {
     "users": [
         {
@@ -499,8 +523,8 @@ Create a new user by POSTing to /users:
 
 ```
 POST /users
-Accept: application/json+userdb
-Content-Type: application/json+userdb
+Accept: application/json
+Content-Type: application/json
 { "name": "Karl", "country": "Austria" }
 ```
 
@@ -508,7 +532,7 @@ Content-Type: application/json+userdb
 
 ```
 201 Created
-Content-Type: application/json+userdb
+Content-Type: application/json
 {
     "users": {
         "id": 3,
@@ -547,8 +571,8 @@ Change the existing user:
 
 ```
 PUT /users/1
-Accept: application/json+userdb
-Content-Type: application/json+userdb
+Accept: application/json
+Content-Type: application/json
 { "name": "Emil", "country": "Bhutan" }
 ```
 
@@ -556,7 +580,7 @@ Content-Type: application/json+userdb
 
 ```
 200 OK
-Content-Type: application/json+userdb
+Content-Type: application/json
 {
     "users": {
         "id": 1,
@@ -591,19 +615,19 @@ Content-Type: application/json+userdb
 
 ### Anti-Patterns
 
-`GET http://api.example.com/services?op=update_customer&id=12345&format=json`
+**`GET http://api.example.com/services?op=update_customer&id=12345&format=json`**
 
 
-`GET http://api.example.com/update_customer/12345`
+**`GET http://api.example.com/update_customer/12345`**
 
 
-`GET http://api.example.com/customers/12345/update`
+**`GET http://api.example.com/customers/12345/update`**
 
 
-`PUT http://api.example.com/customers/12345/update`
+**`PUT http://api.example.com/customers/12345/update`**
 
 
-`PUT http://api.example.com/customers/12345`
+**`PUT http://api.example.com/customers/12345`**
 
 
 ### Idempotence(幂等)
