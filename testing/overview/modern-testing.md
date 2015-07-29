@@ -1,6 +1,7 @@
 ## Modern Testing Overview
 
 
+
 ## Unit Testing
 
 > **Unit testing** is a software development process in which the smallest testable parts of an application, called units, are individually and independently scrutinized for proper operation.
@@ -54,6 +55,8 @@ public void demoStaticMethodMocking() throws Exception {
 
 #### Coverage Report
 
+![jacoco](res/jacoco.png)
+
 
 ### Javascript Unit Testing
 #### Testing Framework(Jasmine)
@@ -99,14 +102,14 @@ it("tracks that the spy was called", function() {
 
 ### Coverage Report(Istanbul)
 
+![istanbul](res/istanbul.png)
 
-### Node.js
 
+![node](res/node.jpg)
 > Node.js® is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications.
 
 
-### Karma
-
+![karma](res/karma.png)
 > Karma is a JavaScript command line tool that can be used to spawn a web server which loads your application's source code and executes your tests.
 
 
@@ -121,7 +124,13 @@ it("tracks that the spy was called", function() {
 
 
 
-### TDD
+### Test-Driven Development(TDD)
+
+![tdd](res/tdd.gif)
+
+
+### Advantages
+
 - Forces radical simplification of the code
 - Forces you to write small classes focused on one thing
 - Helps create loosely coupled code
@@ -134,7 +143,8 @@ it("tracks that the spy was called", function() {
 - The test cases you wrote may not be the right thing  that the users need
 
 
-### BDD
+
+### Behavior-driven development(BDD)
 > Behavior-driven development (or BDD) is an agile software development technique that encourages collaboration between developers, QA and non-technical or business participants in a software project.
 
 
@@ -169,12 +179,33 @@ test student
 ```
 
 
-### From TDD TO BDD
+![cucumber](res/cucumber-logo.svg)
+> Cucumber lets software development teams describe how software should behave in plain text. The text is written in a business-readable domain-specific language and serves as documentation, automated tests and development-aid - all rolled into one format.
 
-![tdd-bdd](res/tdd-bdd.png)
+
+### 1. Describe behaviour in plain tex
+![cuke-1](res/cuke-1.png)
 
 
-### Cucumber
+### 2. Write a step definition in Ruby
+![cuke-2](res/cuke-2.png)
+
+
+### 3. Run and watch it fail
+![cuke-3](res/cuke-3.png)
+
+
+### 4. Write code to make the step pass
+![cuke-4](res/cuke-4.png)
+
+
+### 5. Run again and see the step pass
+![cuke-5](res/cuke-5.png)
+
+
+### 6. Repeat 2-5 until green like a cuke
+![cuke-6](res/cuke-6.png)
+
 
 ### UI Automation Testing Example
 
@@ -183,8 +214,13 @@ test student
 - RSpec
 
 
-### Pact
-#### Integration Contract Test
+### From TDD TO BDD
+
+![tdd-bdd](res/tdd-bdd.png)
+
+
+
+### Integration Contract Test
 
 ![Integration Contract Test](res/contract-test.png)
 
@@ -198,9 +234,6 @@ test student
 #### Verify Contract
 
 ![pact-2](res/pact-2.png)
-
-
-### Example
 
 
 
