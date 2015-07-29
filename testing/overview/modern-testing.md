@@ -226,12 +226,9 @@ test student
 
 
 ### Consumer Driven Contract
-#### Generate Contract
 
 ![pact-1](res/pact-1.png)
 
-
-#### Verify Contract
 
 ![pact-2](res/pact-2.png)
 
