@@ -143,14 +143,16 @@ it("tracks that the spy was called", function() {
 - The test cases you wrote may not be the right thing  that the users need
 
 
-
 ### Behavior-driven development(BDD)
 > Behavior-driven development (or BDD) is an agile software development technique that encourages collaboration between developers, QA and non-technical or business participants in a software project.
 
 
+![gherkin-lang](res/lang.png)
+
+
 ### Gherkin Language
 
-![gherkin-lang](res/lang.png)
+> Gherkin is a Business Readable, **Domain Specific Language** created especially for behavior descriptions. It gives you the ability to remove logic details from behavior tests. Gherkin serves two purposes: serving as your project's documentation and automated tests.
 
 
 ``` javascript
@@ -173,13 +175,25 @@ describe("A spec", function() {
 ```
 
 
-JAVA
 ``` java
-test student
+@Test
+public void test_student1_should_say_1() throws Exception {
+    assertThat(result[0], is("1"));
+}
+
+@Test
+public void test_student3_should_say_Fizz() throws Exception {
+    assertThat(result[3 - 1], is("Fizz"));
+}
+
+@Test
+public void test_student5_should_say_Buzz() throws Exception {
+    assertThat(result[5 - 1], is("Buzz"));
+}
 ```
 
 
-![cucumber](res/cucumber-logo.svg)
+![cucumber](res/cucumber.png)
 > Cucumber lets software development teams describe how software should behave in plain text. The text is written in a business-readable domain-specific language and serves as documentation, automated tests and development-aid - all rolled into one format.
 
 
@@ -233,6 +247,26 @@ test student
 ![pact-2](res/pact-2.png)
 
 
+### Self Initializing Fake
+
+![self-init-fake](res/self-init-fake.png)
+
+
+Create contracts based on the documented structure
+
+![pacto-1](res/pacto-1.png)
+
+
+Create stubbed responses to test consumers
+
+![pacto-2](res/pacto-2.png)
+
+
+Create sample requests for simulated consumers to test providers
+
+![pacto-3](res/pacto-3.png)
+
+
 
 ### Continuous Integration(CI)
 
@@ -244,4 +278,4 @@ test student
 ![dashboard](res/dashboard.png)
 
 
-## DONE
+![you-need-some-tests-yo](res/you-need-some-tests-yo.jpg)
