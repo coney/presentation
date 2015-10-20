@@ -105,16 +105,16 @@ it("tracks that the spy was called", function() {
 ![istanbul](res/istanbul.png)
 
 
-![node](res/node.jpg)
-> Node.js® is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications.
-
-
 ![karma](res/karma.png)
 > Karma is a JavaScript command line tool that can be used to spawn a web server which loads your application's source code and executes your tests.
 
 
+![node](res/node.jpg)
+> Node.js® is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications.
+
+
 ### How Karma Works
-- Spawns a web server to serve the javscript sources
+- Spawns a web server to serve the javascript sources
 - Starts a web browser that executes source code against test code
 - Examines the results for each test against each browser
 - Displays the results to the developer such that they can see which browsers and tests passed or failed
@@ -134,12 +134,13 @@ it("tracks that the spy was called", function() {
 - Forces radical simplification of the code
 - Forces you to write small classes focused on one thing
 - Helps create loosely coupled code
+- Spends less time on debugging
 - Refactoring Encourages Improvements
 
 
 ### Disadvantages?
-- TDD is hard to learn, especially on your own.
-- You can expect reduced productivity for 2-4 months after starting.
+- TDD is hard to learn, especially on your own
+- You can expect reduced productivity for 2-4 months after starting
 - The test cases you wrote may not be the right thing  that the users need
 
 
@@ -197,7 +198,7 @@ public void test_student5_should_say_Buzz() throws Exception {
 > Cucumber lets software development teams describe how software should behave in plain text. The text is written in a business-readable domain-specific language and serves as documentation, automated tests and development-aid - all rolled into one format.
 
 
-### 1. Describe behaviour in plain tex
+### 1. Describe behaviour in plain text
 ![cuke-1](res/cuke-1.png)
 
 
