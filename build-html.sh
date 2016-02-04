@@ -4,7 +4,7 @@ TEMPLATE="template/index.html"
 
 
 function get_all_slides {
-  slides_dir="arch java testing"
+  slides_dir="arch java testing ops"
   for i in $slides_dir; do
     echo $i
   done
