@@ -30,9 +30,7 @@ note: reference from https://github.com/macdao/presentations/blob/gh-pages/huawe
 - 例如要报35的同学数字中包含了第一个特殊数(3), 所以应该说Fizz, 而不是BuzzWhizz.
 
 
-
 ### 实现
-
 ``` java
 public class Student {
     public String say(int number) {
@@ -51,7 +49,6 @@ public void shouldSayNumberDirectly() throws Exception {
 
 
 ### 规则一
-
 ```java
 public class Student {
     public String say(int number) {
@@ -65,7 +62,8 @@ public class Student {
         return Integer.toString(number);
     }
 }
-
+```
+``` java
 @Test
 public void shouldSayCorrespondingWordIfNumberIsAMultipleOfSpecialNumber() {
     Student student = new Student();
@@ -75,71 +73,22 @@ public void shouldSayCorrespondingWordIfNumberIsAMultipleOfSpecialNumber() {
 }
 ```
 
+
 ### 规则二
-
 ```java
 public class Student {
     public String say(int number) {
         StringBuilder sb = new StringBuilder();
 
-        if (number % 3 == 0) {
-            sb.append("Fizz");
-        }
-        if (number % 5 == 0) {
-            sb.append("Buzz");
-        }
-        if (number % 7 == 0) {
-            sb.append("Whizz");
-        }
+        if (number % 3 == 0) sb.append("Fizz");
+        if (number % 5 == 0) sb.append("Buzz");
+        if (number % 7 == 0) sb.append("Whizz");
+
         return sb.length() != 0 ? sb.toString() : Integer.toString(number);
     }
 }
-
-@Test
-public void shouldSayCorrespondingWordsIfNumberIsAMultipleOfMultipleNumbers() {
-    Student student = new Student();
-    assertThat(student.say(3 * 5), is("FizzBuzz"));
-    assertThat(student.say(5 * 7), is("BuzzWhizz"));
-    assertThat(student.say(3 * 3 * 5 * 7), is("FizzBuzzWhizz"));
-}
-
 ```
-
-
-### 规则三
-
-```java
-
-public class Student {
-    public String say(int number) {
-        StringBuilder sb = new StringBuilder();
-
-        if (Integer.toString(number).contains("3")) {
-            return "Fizz";
-        }
-
-        if (number % 3 == 0) {
-            sb.append("Fizz");
-        }
-        if (number % 5 == 0) {
-            sb.append("Buzz");
-        }
-        if (number % 7 == 0) {
-            sb.append("Whizz");
-        }
-
-        return sb.length() != 0 ? sb.toString() : Integer.toString(number);
-    }
-}
-
-@Test
-public void shouldSayFizzIfNumberContains3() {
-    Student student = new Student();
-    assertThat(student.say(13), is("Fizz"));
-    assertThat(student.say(23), is("Fizz"));
-    assertThat(student.say(35), is("Fizz"));
-}
-
+``` java
 @Test
 public void shouldSayCorrespondingWordsIfNumberIsAMultipleOfMultipleNumbers() {
     Student student = new Student();
@@ -150,9 +99,66 @@ public void shouldSayCorrespondingWordsIfNumberIsAMultipleOfMultipleNumbers() {
 ```
 
 
-# OCP(开放封闭原则)
-![ocp](resources/ocp.jpg)
+### 规则三
+``` java
+public class Student {
+    public String say(int number) {
+        if (Integer.toString(number).contains("3")) return "Fizz";
 
+        StringBuilder sb = new StringBuilder();
+        if (number % 3 == 0) sb.append("Fizz");
+        if (number % 5 == 0) sb.append("Buzz");
+        if (number % 7 == 0) sb.append("Whizz");
+        return sb.length() != 0 ? sb.toString() : Integer.toString(number);
+    }
+}
+```
+``` java
+@Test
+public void shouldSayFizzIfNumberContains3() {
+    Student student = new Student();
+    assertThat(student.say(13), is("Fizz"));
+    assertThat(student.say(35), is("Fizz"));
+}
+@Test
+public void shouldSayCorrespondingWordsIfNumberIsAMultipleOfMultipleNumbers() {
+    Student student = new Student();
+    assertThat(student.say(15), is("FizzBuzz"));
+    assertThat(student.say(35), is("BuzzWhizz")); // failed!
+    assertThat(student.say(105), is("FizzBuzzWhizz"));
+}
+```
+
+
+### OCP(开放封闭原则)
+![ocp](res/ocp.jpg)
+
+
+### 重构
+``` java
+public class Student {
+    public String say(int number) {
+        // 规则三
+        if (Integer.toString(number).contains("3")) return "Fizz";
+        // 规则二 & 一
+        StringBuilder sb = new StringBuilder();
+        if (number % 3 == 0) sb.append("Fizz");
+        if (number % 5 == 0) sb.append("Buzz");
+        if (number % 7 == 0) sb.append("Whizz");
+        // 默认规则
+        return sb.length() != 0 ? sb.toString() : Integer.toString(number);
+    }
+}
+```
+- Student按照优先级匹配规则
+- 每个规则处理不同类型的数字
+
+
+### SRP(单一职责原则)
+![srp](res/srp.jpg)
+
+
+### Student按照优先级匹配规则
 ``` java
 public class Student {
     private List<Rule> rules;
@@ -171,34 +177,22 @@ public class Student {
     }
 }
 ```
-
-
-<!-- .slide: data-background="white" -->
-### 重构
-
-```java
-private List<GameRule> rules;
-
-public String say() {
-    for (GameRule rule : rules) {
-        final Optional<String> result = rule.say(index);
-        if (result.isPresent()) {
-            return result.get();
-        }
-    }
-
-    throw new IllegalStateException();
+``` java
+interface Rule {
+    Optional<String> apply(int number);
 }
 ```
 
 
+### 默认规则
 ``` java
 class DefaultRule implements Rule {
     public Optional<String> apply(int number) {
         return Optional.of(Integer.toString(number));
     }
 }
-
+```
+``` java
 @Test
 public void shouldSayNumberDirectly() throws Exception {
     Student student = new Student(new DefaultRule());
@@ -209,6 +203,7 @@ public void shouldSayNumberDirectly() throws Exception {
 ```
 
 
+### 规则一 & 规则二
 ``` java
 public class MultipleNumberRule implements Rule {
 
@@ -220,7 +215,8 @@ public class MultipleNumberRule implements Rule {
         return Optional.fromNullable(sb.length() == 0 ? null : sb.toString());
     }
 }
-
+```
+``` java
 @Test
 public void shouldSayCorrespondingWordsIfNumberIsAMultipleOfMultipleNumbers() {
     Student student = new Student(new MultipleNumberRule(), new DefaultRule());
@@ -231,6 +227,7 @@ public void shouldSayCorrespondingWordsIfNumberIsAMultipleOfMultipleNumbers() {
 ```
 
 
+### 规则三
 ``` java
 public class SpecialNumberRule implements Rule {
     public Optional<String> apply(int number) {
@@ -241,36 +238,29 @@ public class SpecialNumberRule implements Rule {
         }
     }
 }
+```
+``` java
 @Test
 public void shouldSayFizzIfNumberContains3() {
-    Student student = new Student(new SpecialNumberRule(), new MultipleNumberRule(), new DefaultRule());
+    Student student = new Student(new SpecialNumberRule(),
+        new MultipleNumberRule(), new DefaultRule());
     assertThat(student.say(13), is("Fizz"));
-    assertThat(student.say(23), is("Fizz"));
+    assertThat(student.say(15), is("FizzBuzz"));
     assertThat(student.say(35), is("Fizz"));
 }
 ```
 
 
 ### 问题
-- 如果规则改变, 遇到3的倍数返回Buzz, 遇到5的倍数返回Buzz
-- 新增规则, 遇到2的倍数返回Jazz
+- 规则改变, 当数字中包含3, 则返回Buzz
 ``` java
-public class Student {
-    private List<Rule> rules;
-    public Student(Rule... rules) {
-        this.rules = ImmutableList.copyOf(rules);
-    }
-
-    public String say(int number) {
-        for (Rule rule : rules) {
-            Optional<String> result = rule.apply(number);
-            if (result.isPresent()) {
-                return result.get();
-            }
-        }
-
-        throw new IllegalStateException();
-    }
+@Test
+public void shouldSayFizzIfNumberContains3() {
+    Student student = new Student(new SpecialNumberRule(),
+        new MultipleNumberRule(), new DefaultRule());
+    assertThat(student.say(13), is("Fizz"));    // failed!
+    assertThat(student.say(15), is("FizzBuzz"));
+    assertThat(student.say(35), is("Fizz"));    // failed!
 }
 ```
 
@@ -280,11 +270,10 @@ public class Student {
 
 
 ## SpecialNumberRule的测试
-
 - Case 1
  - Given一个数字
  - When数字中包含3
- - Then返回Fizz
+ - Then返回Buzz
 
 - Case 2
  - Given一个数字
@@ -297,8 +286,8 @@ public class SpecialNumberRuleTest {
     @Test
     public void shoudReturnFizzIfNumberContains3() throws Exception {
         SpecialNumberRule rule = new SpecialNumberRule();
-        assertThat(rule.apply(3).get(), is("Fizz"));
-        assertThat(rule.apply(13).get(), is("Fizz"));
+        assertThat(rule.apply(3).get(), is("Buzz"));
+        assertThat(rule.apply(13).get(), is("Buzz"));
     }
 
     @Test
@@ -327,39 +316,42 @@ public class SpecialNumberRuleTest {
 
 ### 通过假实现完成Student的测试
 ``` java
-@Test
-public void shouldSayWordAccrodingToTheRules2() {
-    Student student = new Student(new Rule() {
-        public Optional<String> apply(int number) {
-            return Optional.fromNullable(number == 3 ? "Fizz" : null);
-        }
-    }, new Rule() {
-        public Optional<String> apply(int number) {
-            return Optional.of("Buzz");
-        }
-    });
+public class StudentTest {
+    @Test
+    public void shouldSayWordAccrodingToTheRules() {
+        Student student = new Student(new Rule() {
+            public Optional<String> apply(int number) {
+                return Optional.fromNullable(number == 3 ? "Fizz" : null);
+            }
+        }, new Rule() {
+            public Optional<String> apply(int number) {
+                return Optional.of("Buzz");
+            }
+        });
 
-    assertThat(student.say(3), is("Fizz"));
-    assertThat(student.say(5), is("Buzz"));
+        assertThat(student.say(3), is("Fizz"));
+        assertThat(student.say(5), is("Buzz"));
+    }
 }
 ```
 
 
-<!-- .slide: data-background="white" -->
 ### 通过Mock完成Student的测试
 ``` java
-@Test
-public void shouldSayWordAccrodingToTheRules3() {
-    Rule rule1 = mock(Rule.class);
-    when(rule1.apply(anyInt())).thenReturn(Optional.<String>absent());
-    when(rule1.apply(2)).thenReturn(Optional.of("Fizz"));
+public class StudentTest {
+    @Test
+    public void shouldSayWordAccrodingToTheRules() {
+        Rule rule1 = mock(Rule.class);
+        when(rule1.apply(anyInt())).thenReturn(Optional.<String>absent());
+        when(rule1.apply(2)).thenReturn(Optional.of("Fizz"));
 
-    Rule rule2 = mock(Rule.class);
-    when(rule2.apply(anyInt())).thenReturn(Optional.of("Buzz"));
+        Rule rule2 = mock(Rule.class);
+        when(rule2.apply(anyInt())).thenReturn(Optional.of("Buzz"));
 
-    Student student = new Student(rule1, rule2);
-    assertThat(student.say(3), is("Fizz"));
-    assertThat(student.say(5), is("Buzz"));
+        Student student = new Student(rule1, rule2);
+        assertThat(student.say(3), is("Fizz"));
+        assertThat(student.say(5), is("Buzz"));
+    }
 }
 ```
 
