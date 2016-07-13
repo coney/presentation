@@ -25,11 +25,11 @@ function process {
   filename=`basename $mdfile`
   target=$dirname/index.html
   cp -fv $TEMPLATE $target
-  sed -i '' "s/\\\$filename\\\$/$filename/" "$target"
+  sed -i "s/\\\$filename\\\$/$filename/" "$target"
 
   title=`head -1 $mdfile | tr -d '#'`
   if [[ -n $title ]]; then
-    sed -i '' "s/\\\$title\\\$/$title/" "$target"
+    sed -i "s/\\\$title\\\$/$title/" "$target"
   fi
 }
 
