@@ -279,6 +279,19 @@ public class Student {
 - System Under Test
 
 
+## SpecialNumberRule的测试
+
+- Case 1
+ - Given一个数字
+ - When数字中包含3
+ - Then返回Fizz
+
+- Case 2
+ - Given一个数字
+ - When数字中没有3
+  - Then不返回内容
+
+
 ``` java
 public class SpecialNumberRuleTest {
     @Test
@@ -298,94 +311,6 @@ public class SpecialNumberRuleTest {
 ```
 
 
-``` java
-@Test
-public void shouldSayWordAccrodingToTheRules2() {
-    Student student = new Student(new Rule() {
-        public Optional<String> apply(int number) {
-            return Optional.fromNullable(number == 2 ? "b" : null);
-        }
-    }, new Rule() {
-        public Optional<String> apply(int number) {
-            return Optional.of("a");
-        }
-    });
-
-    assertThat(student.say(1), is("a"));
-    assertThat(student.say(2), is("b"));
-}
-```
-
-
-<!-- .slide: data-background="white" -->
-``` java
-@Test
-public void shouldSayWordAccrodingToTheRules3() {
-    Rule rule1 = mock(Rule.class);
-    when(rule1.apply(anyInt())).thenReturn(Optional.<String>absent());
-    when(rule1.apply(2)).thenReturn(Optional.of("b"));
-
-    Rule rule2 = mock(Rule.class);
-    when(rule2.apply(anyInt())).thenReturn(Optional.of("a"));
-
-    Student student = new Student(rule1, rule2);
-    assertThat(student.say(1), is("a"));
-    assertThat(student.say(2), is("b"));
-}
-```
-
-
-<!-- .slide: data-background="white" -->
-
-## Inversion of Control(控制反转)
-
-![The dependencies using a simple creation in the lister class](resources/naive.gif)
-
-*Figure 1 shows the dependencies for this situation. The MovieLister class is dependent on both the MovieFinder interface and upon the implementation.*
-
-
-<!-- .slide: data-background="white" -->
-
-### Dependency Injection(依赖注入)
-
-![The dependencies for a Dependency Injector](resources/injector.gif)
-
-*Figure 2: The dependencies for a Dependency Injector*
-
-
-### IoC
-
-The main control of the program was inverted, moved away from you to the framework.
-
-
-
-# Mock
-
-
-## 测试Student
-
-反例
-
-```java
-@Test
-public void student_1_should_say_1() throws Exception {
-    final MultipleGameRule rule1 = new MultipleGameRule(fizzGame);
-    final DefaultGameRule rule2 = new DefaultGameRule();
-    final ArrayList<GameRule> rules = Lists.newArrayList(rule1, rule2);
-    final Student student = new Student(rules, 1);
-
-    assertThat(student.say(), is("1"));
-}
-```
-
-Note: 同时把MultipleGameRule等其他类引入了该测试
-
-
-## SUT
-
-**System Under Test**
-
-
 ## Student的测试
 
 - Case 1
@@ -400,36 +325,48 @@ Note: 同时把MultipleGameRule等其他类引入了该测试
  - Then返回Buzz
 
 
-## Case 1
-
-```java
+### 通过假实现完成Student的测试
+``` java
 @Test
-public void say_fizz_when_first_rule_return_fizz() throws Exception {
-    final GameRule rule1 = new GameRule() {
-        @Override
-        public Optional<String> say(int index) {
-            return Optional.of("Fizz");
+public void shouldSayWordAccrodingToTheRules2() {
+    Student student = new Student(new Rule() {
+        public Optional<String> apply(int number) {
+            return Optional.fromNullable(number == 3 ? "Fizz" : null);
         }
-    };
-    final GameRule rule2 = new GameRule() {
-        @Override
-        public Optional<String> say(int index) {
-            return Optional.absent();
+    }, new Rule() {
+        public Optional<String> apply(int number) {
+            return Optional.of("Buzz");
         }
-    };
-    final Student student = new Student(Lists.newArrayList(rule1, rule2), 1);
-    assertThat(student.say(), is("Fizz"));
+    });
+
+    assertThat(student.say(3), is("Fizz"));
+    assertThat(student.say(5), is("Buzz"));
 }
 ```
 
 
-## Exercise 2
+<!-- .slide: data-background="white" -->
+### 通过Mock完成Student的测试
+``` java
+@Test
+public void shouldSayWordAccrodingToTheRules3() {
+    Rule rule1 = mock(Rule.class);
+    when(rule1.apply(anyInt())).thenReturn(Optional.<String>absent());
+    when(rule1.apply(2)).thenReturn(Optional.of("Fizz"));
 
-实现Case 2
-- Given两个规则
-- When第一个规则没有返回值
-- And第二个规则返回了Buzz
-- Then返回Buzz
+    Rule rule2 = mock(Rule.class);
+    when(rule2.apply(anyInt())).thenReturn(Optional.of("Buzz"));
+
+    Student student = new Student(rule1, rule2);
+    assertThat(student.say(3), is("Fizz"));
+    assertThat(student.say(5), is("Buzz"));
+}
+```
+
+
+
+# Mock
+![fake-person](resources/fake-person.jpg)
 
 
 ## Mockito
@@ -521,26 +458,62 @@ verify(mockedList, atMost(5)).add("three times");
 ```
 
 
-## Exercise 3
+``` java
+public class WeatherNotifier
+{
+    private HttpClient client;
 
-- 把StudentTest用Mockito改写
+    public WeatherNotifier(HttpClient client)
+    {
+        this.client = client;
+    }
+
+    void check()
+    {
+        if (getWeather().equals("rain"))
+        {
+            sendNotification();
+        }
+    }
+
+    private void sendNotification()
+    {
+        client.post("/sms-gateway", String.format("number=%s&content=%s", "13012345678", "raining"));
+    }
+
+    private String getWeather()
+    {
+        String weatherJson = client.get("/weather-api", "location=xian");
+        return new JsonParser().parse(weatherJson).getAsJsonObject().get("weather").getAsString();
+    }
+}
+```
 
 
-## 重构完成
+``` java
+public class WeatherNotifierTest
+{
+    @Test public void shouldSendNotificationWhenRaining() throws Exception
+    {
+        HttpClient httpClient = mock(HttpClient.class);
 
-- <del>重构当前代码, 支持增加新的规则</del>
-- 增加新的规则
+        when(httpClient.get("/weather-api", "location=xian")).thenReturn("{weather: \"rain\"}");
+        new WeatherNotifier(httpClient).check();
 
+        verify(httpClient, times(1)).post("/sms-gateway", "number=13012345678&content=raining");
+    }
 
+    @Test public void shouldNotSendNotificationWhenItIsSunny() throws Exception
+    {
+        HttpClient httpClient = mock(HttpClient.class);
 
-# 课后练习
+        when(httpClient.get("/weather-api", "location=xian")).thenReturn("{weather: \"sunny\"}");
+        new WeatherNotifier(httpClient).check();
 
-- 完成新的规则的测试和实现
-- 为MultipleGameRule编写Java测试
-- 为DefaultGameRule编写Java测试
-- Merge Request
-
-
+        verify(httpClient, times(0)).post(anyString(), anyString());
+    }
+}
+```
 
 # 参考资料
 
