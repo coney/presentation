@@ -265,7 +265,7 @@ public void shouldSayFizzIfNumberContains3() {
 ```
 
 
-# SUT
+## SUT
 - System Under Test
 
 
@@ -300,7 +300,7 @@ public class SpecialNumberRuleTest {
 ```
 
 
-## Student的测试
+### Student的测试
 
 - Case 1
  - Given两个规则
@@ -336,44 +336,9 @@ public class StudentTest {
 ```
 
 
-### 通过Mock完成Student的测试
-``` java
-public class StudentTest {
-    @Test
-    public void shouldSayWordAccrodingToTheRules() {
-        Rule rule1 = mock(Rule.class);
-        when(rule1.apply(anyInt())).thenReturn(Optional.<String>absent());
-        when(rule1.apply(2)).thenReturn(Optional.of("Fizz"));
 
-        Rule rule2 = mock(Rule.class);
-        when(rule2.apply(anyInt())).thenReturn(Optional.of("Buzz"));
-
-        Student student = new Student(rule1, rule2);
-        assertThat(student.say(3), is("Fizz"));
-        assertThat(student.say(5), is("Buzz"));
-    }
-}
-```
-
-
-
-# Mock
+# Test Double
 ![fake-person](resources/fake-person.jpg)
-
-
-## Mockito
-
-```java
-import static org.mockito.Mockito.*;
-
-List<String> mockedList = mock(List.class);
-
-when(mockedList.get(0)).thenReturn("first");
-when(mockedList.get(1)).thenThrow(new RuntimeException());
-
-assertThat(mockedList.get(0), is("first"));
-
-```
 
 
 ## Test Double
@@ -396,7 +361,43 @@ assertThat(mockedList.get(0), is("first"));
  Objects pre-programmed with expectations which form a specification of the calls they are expected to receive.
 
 
-## Mockito Stub
+### 通过Mock完成Student的测试
+``` java
+import static org.mockito.Mockito.*;
+public class StudentTest {
+    @Test
+    public void shouldSayWordAccrodingToTheRules() {
+        Rule rule1 = mock(Rule.class);
+        when(rule1.apply(anyInt())).thenReturn(Optional.<String>absent());
+        when(rule1.apply(3)).thenReturn(Optional.of("Fizz"));
+
+        Rule rule2 = mock(Rule.class);
+        when(rule2.apply(anyInt())).thenReturn(Optional.of("Buzz"));
+
+        Student student = new Student(rule1, rule2);
+        assertThat(student.say(3), is("Fizz"));
+        assertThat(student.say(5), is("Buzz"));
+    }
+}
+```
+
+
+## Mockito
+
+```java
+import static org.mockito.Mockito.*;
+
+List<String> mockedList = mock(List.class);
+
+when(mockedList.get(0)).thenReturn("first");
+when(mockedList.get(1)).thenThrow(new RuntimeException());
+
+assertThat(mockedList.get(0), is("first"));
+
+```
+
+
+### Mockito Stub
 
 ```java
 Car boringStubbedCar = when(mock(Car.class).shiftGear())
@@ -407,16 +408,104 @@ doThrow(new RuntimeException()).when(mockedList).clear();
 ```
 
 
-## Mockito Mock
+### Weather Notifier
+
+- 小明是一名程序员, 为了体现对女朋友的关心, 小明决定写一个程序自动在天气变化时向女朋友手机上发送一条提醒信息
+- 例如当天如果下雨, 则自动向她的手机上发送一条"今天下雨,记得带伞哦"
+
+
+- 小明经过一番努力, 发现某网站提供如下两个API, 能够帮助他实现梦想:
+
+  - GET http://api.com/weather-api?location={CityName}  
+    获取指定城市的天气情况, 会返回sunny, rain等状态
+
+  - POST http://api.com/sms-gateway?number={PhoneNumber}&content={Message}  
+    向指定手机号发送短信
+
+
+``` java
+public interface HttpClient
+{
+    String get(String url, String params);
+    String post(String url, String params);
+    // other irrelevant methods
+}
+```
+
+``` java
+public class WeatherNotifier {
+    private HttpClient client;
+    public WeatherNotifier(HttpClient client) {
+        this.client = client;
+    }
+    void check() {
+        if (getWeather().equals("rain")) sendNotification();
+    }
+    private void sendNotification() {
+        client.post("http://api.com/sms-gateway", String.format(
+                "number=%s&content=%s", "13012345678", "今天下雨,记得带伞哦"));
+    }
+    private String getWeather() {
+        return client.get("http://api.com/weather-api",
+                "location=xian");
+    }
+}
+```
+
+
+### 测试?
+- 获取天气的API需要网络连接, 并且最近持续是晴天
+- 发送短信的API同样需要网络连接, 并且还会收费
+
+
+### Why Mock
+- 被测对象的外部依赖难以构造
+- 由于外部依赖的性能瓶颈导致测试运行缓慢(例如数据库)
+- 由于外部依赖的稳定性较差导致测试不稳定(例如网络, 时间)
+- 需要构造一些难以触发的异常场景, 用以验证被测对象的特定分支
+- 外部依赖尚未实现, 或是其逻辑即将改变
+
+
+### Mockito Mock
 
 ```java
-List mockedList = mock(List.class);
+@Test
+public void shouldVerifyMockedMethods() throws Exception {
+    List mockedList = mock(List.class);
 
-mockedList.add("one");
-mockedList.clear();
+    mockedList.add("one");
+    mockedList.clear();
 
-verify(mockedList).add("one");
-verify(mockedList).clear();
+    verify(mockedList).add("one");
+    verify(mockedList).clear();
+}
+```
+
+
+``` java
+@Test
+public void shouldVerifyMockedMethods() throws Exception {
+    List mockedList = mock(List.class);
+
+    mockedList.add("one");
+    mockedList.clear();
+
+    verify(mockedList).add("two");
+    verify(mockedList).clear();
+}
+```
+Test Result:
+``` text
+Argument(s) are different! Wanted:
+list.add("two");
+-> at MockTest.shouldVerifyMockedMethods(MockTest.java:28)
+Actual invocation has different arguments:
+list.add("one");
+-> at MockTest.shouldVerifyMockedMethods(MockTest.java:25)
+
+Comparison Failure:
+Expected :list.add("two");
+Actual   :list.add("one");
 ```
 
 
@@ -450,66 +539,12 @@ verify(mockedList, atMost(5)).add("three times");
 ```
 
 
-``` java
-public class WeatherNotifier
-{
-    private HttpClient client;
+### 练习
+帮助小明完成测试
 
-    public WeatherNotifier(HttpClient client)
-    {
-        this.client = client;
-    }
-
-    void check()
-    {
-        if (getWeather().equals("rain"))
-        {
-            sendNotification();
-        }
-    }
-
-    private void sendNotification()
-    {
-        client.post("/sms-gateway", String.format("number=%s&content=%s", "13012345678", "raining"));
-    }
-
-    private String getWeather()
-    {
-        String weatherJson = client.get("/weather-api", "location=xian");
-        return new JsonParser().parse(weatherJson).getAsJsonObject().get("weather").getAsString();
-    }
-}
-```
-
-
-``` java
-public class WeatherNotifierTest
-{
-    @Test public void shouldSendNotificationWhenRaining() throws Exception
-    {
-        HttpClient httpClient = mock(HttpClient.class);
-
-        when(httpClient.get("/weather-api", "location=xian")).thenReturn("{weather: \"rain\"}");
-        new WeatherNotifier(httpClient).check();
-
-        verify(httpClient, times(1)).post("/sms-gateway", "number=13012345678&content=raining");
-    }
-
-    @Test public void shouldNotSendNotificationWhenItIsSunny() throws Exception
-    {
-        HttpClient httpClient = mock(HttpClient.class);
-
-        when(httpClient.get("/weather-api", "location=xian")).thenReturn("{weather: \"sunny\"}");
-        new WeatherNotifier(httpClient).check();
-
-        verify(httpClient, times(0)).post(anyString(), anyString());
-    }
-}
-```
 
 # 参考资料
 
 - [SOLID](https://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29)
-- [Inversion of Control Containers and the Dependency Injection pattern](http://www.martinfowler.com/articles/injection.html)
 - [Mocks Aren't Stubs](http://martinfowler.com/articles/mocksArentStubs.html)
 - [Mockito](http://site.mockito.org/mockito/docs/current/org/mockito/Mockito.html)
