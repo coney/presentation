@@ -251,6 +251,25 @@ public void shouldSayFizzIfNumberContains3() {
 ```
 
 
+## Inversion of Control(控制反转)
+
+![The dependencies using a simple creation in the lister class](res/naive.gif)
+
+*Figure 1 shows the dependencies for this situation. The MovieLister class is dependent on both the MovieFinder interface and upon the implementation.*
+
+
+### Dependency Injection(依赖注入)
+
+![The dependencies for a Dependency Injector](res/injector.gif)
+
+*Figure 2: The dependencies for a Dependency Injector*
+
+
+### IoC
+
+The main control of the program was inverted, moved away from you to the framework.
+
+
 ### 问题
 - 规则改变, 当数字中包含3, 则返回Buzz
 ``` java
@@ -265,11 +284,32 @@ public void shouldSayFizzIfNumberContains3() {
 ```
 
 
-## SUT
+### 再次理解Student逻辑
+``` java
+public class Student {
+    private List<Rule> rules;
+    public Student(Rule... rules) {
+        this.rules = ImmutableList.copyOf(rules);
+    }
+    public String say(int number) {
+        for (Rule rule : rules) {
+            Optional<String> result = rule.apply(number);
+            if (result.isPresent()) {
+                return result.get();
+            }
+        }
+
+        throw new IllegalStateException();
+    }
+}
+```
+
+
+### SUT
 - System Under Test
 
 
-## SpecialNumberRule的测试
+### SpecialNumberRule的测试
 - Case 1
  - Given一个数字
  - When数字中包含3
@@ -337,11 +377,7 @@ public class StudentTest {
 
 
 
-# Test Double
-![fake-person](resources/fake-person.jpg)
-
-
-## Test Double
+## Test Doubles
 
 - Dummy
 
