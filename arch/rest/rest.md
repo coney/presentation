@@ -641,6 +641,46 @@ Content-Type: application/json
 
 
 
+### HTTP status codes
+
+
+### 2xx Success
+- **200 OK** Standard response for successful HTTP requests.
+- **201 Created** The request has been fulfilled, resulting in the creation of a new resource.
+- **202 Accepted** The request has been accepted for processing, but the processing has not been completed.
+- **204 No Content** The server successfully processed the request and is not returning any content.
+
+
+### 3xx Redirection
+- **301 Moved Permanently** This and all future requests should be directed to the given URI.
+- **302 Found** This and all future requests should be directed to the given URI temporarily.
+- **304 Not Modified** Indicates that the resource has not been modified.
+- **307 Temporary Redirect** like 301, but do not allow the HTTP method to change.
+- **308 Permanent Redirect** like 302, but do not allow the HTTP method to change.
+
+
+### 4xx Client errors
+- **400 Bad Request** The server cannot or will not process the request due to an apparent client error.
+- **401 Unauthorized** Unauthenticated, i.e. the user does not have the necessary credentials.
+- **403 Forbidden** The request was valid, but the server is refusing action.
+- **404 Not Found** The requested resource could not be found but may be available in the future.
+
+
+- **405 Method Not Allowed** A request method is not supported for the requested resource.
+- **406 Not Acceptable** A request method is not supported for the requested resource.
+- **407 Proxy Authentication Required** The client must first authenticate itself with the proxy.
+- **409 Conflict** Indicates that the request could not be processed because of conflict in the request.
+
+
+### 5xx Client errors
+- **500 Internal Server Error** A generic error message.
+- **501 Not Implemented** The server either does not recognize the request method.
+- **502 Bad Gateway** The server was acting as a gateway or proxy and received an invalid response from the upstream server.
+- **503 Service Unavailable** The server is currently unavailable (because it is overloaded or down for maintenance).
+- **504 Gateway Timeout** The server was acting as a gateway or proxy and did not receive a timely response from the upstream server.
+
+
+
 # 参考资料
 
 - [Representational state transfer](https://en.wikipedia.org/wiki/Representational_state_transfer)
