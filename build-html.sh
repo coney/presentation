@@ -4,7 +4,7 @@ TEMPLATE="template/index.html"
 
 
 function get_all_slides {
-  slides_dir="arch java testing ops"
+  slides_dir="arch java testing ops tasking"
   for i in $slides_dir; do
     echo $i
   done
@@ -25,11 +25,11 @@ function process {
   filename=`basename $mdfile`
   target=$dirname/index.html
   cp -fv $TEMPLATE $target
-  sed -i "s/\\\$filename\\\$/$filename/" "$target"
+  gsed -i "s/\\\$filename\\\$/$filename/" "$target"
 
   title=`head -1 $mdfile | tr -d '#'`
   if [[ -n $title ]]; then
-    sed -i "s/\\\$title\\\$/$title/" "$target"
+    gsed -i "s/\\\$title\\\$/$title/" "$target"
   fi
 }
 
