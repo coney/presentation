@@ -33,14 +33,14 @@ https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/
 ### SMART
 - Specific
 - Measurable
-- Achievable 
+- Achievable
 - Relevant
 - Time-Boxed
 
 Note:
 - Specific: 同Testable, 可开发, 可验证
 - Measurable: Estimable, 同时有完成标志, 例如AC, 什么情况下可以算完成
-- Achievable: 可实现 
+- Achievable: 可实现
 - Relevant: Task应该与Story相关
 - Time-Boxed: 有预计时间
 
@@ -142,6 +142,8 @@ Note:
 
 ![chess](res/chess.png)
 
+
+![chess](res/chess.png)
 ```
 1. 在命令行输入步法，然后打印出每个棋子位置
 mov black pao (2, 3) (5, 3)
